@@ -1,0 +1,1 @@
+python -m pwiz -e mysql -u dc_admin app -H dev-storage.mysql.database.azure.com -P > models2.py

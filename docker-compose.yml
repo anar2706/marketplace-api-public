@@ -1,0 +1,14 @@
+version: "3"
+
+services: 
+
+  marketplace-api:
+    build: .
+    image: marketplace-api
+    restart: always
+    environment:
+      - MODULE_NAME=application.app
+      - PORT=5000
+    ports: 
+      - 5000:5000
+  
