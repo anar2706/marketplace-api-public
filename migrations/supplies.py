@@ -32,10 +32,6 @@ class SupplyMigrator:
                 
             record.created = created_at.timestamp()
             record.save()
-            print(f'created {item["id"]} {record.id}')
-
-        else:
-            print(f'exists {item["id"]} {record.id}')
 
         return record
     
@@ -69,8 +65,7 @@ class SupplyMigrator:
                     record.created = time.time()
 
             else:
-                print(f'Supply {record_id}')
-                raise Exception()
+                raise Exception('Attribute not found!')
     
     def call(self):
         search_data = {
@@ -81,8 +76,8 @@ class SupplyMigrator:
             },
             "sort": [{"id": "asc"}]
         }
+        
         response_count = requests.get(f"{self.source_url}/tridge-supplies/_count",auth=self.basic_auth)
-        print(response_count.content)
         
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']

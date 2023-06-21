@@ -31,6 +31,5 @@ class AllCategories:
 
         hits = response.json()['hits']['hits']
         hits = [hit['_source'] for hit in hits]
-        print(len(hits))
 
         return hits

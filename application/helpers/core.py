@@ -14,7 +14,7 @@ def send_log_slack_message(text):
             {
                 
                 "text": f'```{text}```',
-                "title": "Chatbot API",
+                "title": "Marketplace API",
                 "mrkdwn_in": ["text"],
             }
         ],

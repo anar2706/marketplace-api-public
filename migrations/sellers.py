@@ -36,10 +36,6 @@ class SellerMigrator:
                 
             record.created = created_at.timestamp()
             record.save()
-            print(f'created {record.id}')
-
-        else:
-            print(f'exists {record.id}')
 
         return record
     
@@ -59,8 +55,7 @@ class SellerMigrator:
                 record.save()
 
             else:
-                print(f'Supply {record_id}')
-                raise Exception()
+                raise Exception('Supply not found!')
             
     def relate_products(self,item,item_id,payload):
         products = [i['id'] for i in item['supplyingProducts']]
@@ -79,8 +74,7 @@ class SellerMigrator:
                     record.created = time.time()
 
             else:
-                print(f'Product {record_id}')
-                raise Exception()
+                raise Exception('Product Type not found!')
             
     def relate_certificates(self,item,item_id,payload):
         certificates = [i['id'] for i in item['certificates']]
@@ -97,8 +91,7 @@ class SellerMigrator:
                 record.save()
 
             else:
-                print(f'Certificate {record_id}')
-                raise Exception()
+                raise Exception('Celler Certificate not found!')
     
     def call(self):
         search_data = {
@@ -111,7 +104,6 @@ class SellerMigrator:
         }
 
         response_count = requests.get(f"{self.source_url}/tridge-sellers/_count",auth=self.basic_auth)
-        print(response_count.content)
         
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']
@@ -180,7 +172,7 @@ class SellerMigrator:
                         response = requests.post(f"{self.dest_url}/sellers/_doc/{item_id}",json=payload)
                         
                         if not response.ok:
+                            # Failed send message to slack notification channel
                             send_log_slack_message(response.content)
-                            print(f'Failed {item_id}')
 
 

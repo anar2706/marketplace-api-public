@@ -21,10 +21,6 @@ class CertificateMigrator:
             created_at = datetime.strptime(item['createdAt'],"%Y-%m-%dT%H:%M:%S.%f%z")
             record.created = created_at.timestamp()
             record.save()
-            print(f'created {record.id}')
-
-        else:
-            print(f'exists {record.id}')
 
         return record
 
@@ -40,7 +36,6 @@ class CertificateMigrator:
         }
 
         response_count = requests.get(f"{self.source_url}/tridge-certificates/_count",auth=self.basic_auth)
-        print(response_count.content)
         
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']
@@ -53,7 +48,6 @@ class CertificateMigrator:
 
                 response = requests.get(f"{self.source_url}/tridge-certificates/_search",json=search_data,auth=self.basic_auth)
                 if response.status_code == 200:
-                    print('worked 200')
                     content = json.loads(response.content)
                     hits = content['hits']['hits']
                 
@@ -82,7 +76,6 @@ class CertificateMigrator:
 
                         record.payload = payload
                         record.save()
-
                         response = requests.post(f"{self.dest_url}/certificates/_doc/{item_id}",json=payload)
 
 

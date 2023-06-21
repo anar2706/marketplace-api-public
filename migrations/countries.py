@@ -15,7 +15,6 @@ class CountryMigrator:
         self.basic_auth = HTTPBasicAuth(os.environ['SOURCE_ELASTIC_USER'],os.environ['SOURCE_ELSATIC_PASSWORD'])
 
     def create_record(self,item,item_id):
-        print(item)
         record,created = Countries.get_or_create(source='tridge',name=item['name'],
             code=item['code'],continent=item['continent'],zone_id=item['zoneId'])
         
@@ -41,6 +40,7 @@ class CountryMigrator:
             },
             "sort": [{"_id": "asc"}]
         }
+        
         response_count = requests.get(f"{self.source_url}/tridge-countries/_count",auth=self.basic_auth)
         
         if response_count.status_code == 200:
@@ -55,7 +55,6 @@ class CountryMigrator:
                 response = requests.get(f"{self.source_url}/tridge-countries/_search",json=search_data,auth=self.basic_auth)
                 
                 if response.status_code == 200:
-                    print('worked 200')
                     content = json.loads(response.content)
                     hits = content['hits']['hits']
                 

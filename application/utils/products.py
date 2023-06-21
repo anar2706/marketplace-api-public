@@ -46,7 +46,6 @@ class SearchProducts:
         if self.category:
             payload['query']['bool']['filter']['bool']['must'].append({"terms": {"categories": [self.category]}})
 
-        print(json.dumps(payload))
         return payload
 
     async def call(self):

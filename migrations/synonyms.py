@@ -23,11 +23,7 @@ class ProductSynonym:
             record.product_name = item['product']['name']
             record.created = datetime.now().timestamp()
             record.save()
-            print(f'created {record.id}')
-
-        else:
-            print(f'exists {record.id}')
-
+            
         return record
 
     
@@ -75,7 +71,6 @@ class ProductSynonym:
                         }
 
                         record.save()
-
                         response = requests.post(f"{self.dest_url}/product_synonyms/_doc/{item_id}",json=payload)
 
 

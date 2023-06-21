@@ -22,10 +22,6 @@ class ProductTypeMigrator:
             created_at = datetime.strptime(item['createdAt'],"%Y-%m-%dT%H:%M:%S.%f%z")
             record.created = created_at.timestamp()
             record.save()
-            print(f'created {record.id}')
-
-        else:
-            print(f'exists {record.id}')
 
         return record
     
@@ -33,6 +29,7 @@ class ProductTypeMigrator:
     def add_synonyms(self,item):
         synonyms = item['synonyms']
         item_ids = [item['id'] for item in synonyms]
+        
         if not item_ids:
             return []
 
@@ -60,8 +57,7 @@ class ProductTypeMigrator:
                     record.created = time.time()
 
             else:
-                print(f'Category {category_id}')
-                raise Exception()
+                raise Exception('Category not found!')
     
     def call(self):
         search_data = {
@@ -72,8 +68,8 @@ class ProductTypeMigrator:
             },
             "sort": [{"id": "asc"}]
         }
+        
         response_count = requests.get(f"{self.source_url}/tridge-products/_count",auth=self.basic_auth)
-        print(response_count.content)
         
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']

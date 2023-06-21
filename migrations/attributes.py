@@ -1,6 +1,3 @@
-
-
-
 import os
 import json
 import math
@@ -41,8 +38,8 @@ class AttributeMigrator:
             },
             "sort": [{"id": "asc"}]
         }
+        
         response_count = requests.get(f"{self.source_url}/tridge-attributes/_count",auth=self.basic_auth)
-        print(response_count.content)
         
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']
@@ -55,7 +52,6 @@ class AttributeMigrator:
 
                 response = requests.get(f"{self.source_url}/tridge-attributes/_search",json=search_data,auth=self.basic_auth)
                 if response.status_code == 200:
-                    print('worked 200')
                     content = json.loads(response.content)
                     hits = content['hits']['hits']
                 

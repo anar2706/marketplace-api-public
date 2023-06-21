@@ -42,7 +42,7 @@ def load_extensions(app):
         )
 
     class Settings(BaseModel):
-        authjwt_secret_key: str = '3CWen$Jc51Ui'
+        authjwt_secret_key: str = os.environ['APP_SECRET']
         authjwt_access_token_expires: int = os.environ['ACCESS_TOKEN_EXPIRES']
         authjwt_refresh_token_expires: int = os.environ['REFRESH_TOKEN_EXPIRES']
         authjwt_denylist_enabled: bool = True
@@ -66,7 +66,7 @@ def load_extensions(app):
         openapi_schema = get_openapi(
             title="Marketplace API",
             version="1.0.0",
-            description="TestGrow Marketplace API",
+            description="Marketplace API",
             routes=app.routes
         )
         

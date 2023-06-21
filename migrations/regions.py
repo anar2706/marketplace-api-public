@@ -22,10 +22,6 @@ class RegionMigrator:
             created_at = datetime.strptime(item['createdAt'],"%Y-%m-%dT%H:%M:%S.%f%z")
             record.created = created_at.timestamp()
             record.save()
-            print(f'created {record.id}')
-
-        else:
-            print(f'exists {record.id}')
 
         return record
 
@@ -39,8 +35,8 @@ class RegionMigrator:
             },
             "sort": [{"_id": "asc"}]
         }
-        response_count = requests.get(f"{self.source_url}/tridge-regions/_count",auth=self.basic_auth)
         
+        response_count = requests.get(f"{self.source_url}/tridge-regions/_count",auth=self.basic_auth)
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']
             elastic_count = math.ceil(count/10000)
@@ -53,7 +49,6 @@ class RegionMigrator:
                 response = requests.get(f"{self.source_url}/tridge-regions/_search",json=search_data,auth=self.basic_auth)
                 
                 if response.status_code == 200:
-                    print('worked 200')
                     content = json.loads(response.content)
                     hits = content['hits']['hits']
                 
@@ -63,7 +58,6 @@ class RegionMigrator:
                         record  = self.create_record(item)
                         item_id = record.id
                         
-
                         payload = {
                             'id':item_id,
                             'name':item['nameRaw'],
@@ -79,7 +73,6 @@ class RegionMigrator:
 
                         record.payload = payload
                         record.save()
-
                         response = requests.post(f"{self.dest_url}/regions/_doc/{item_id}",json=payload)
 
 

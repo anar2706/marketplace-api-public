@@ -139,18 +139,6 @@ class FavoriteSellers(BaseModel):
     class Meta:
         table_name = 'favorite_sellers'
 
-class NewTable(BaseModel):
-    company = CharField(null=True)
-    created = IntegerField(null=True)
-    email = CharField(null=True)
-    message = TextField(null=True)
-    name = CharField(null=True)
-    phone = CharField(null=True)
-    surname = CharField(null=True)
-
-    class Meta:
-        table_name = 'new_table'
-
 class ProductCategories(BaseModel):
     category_id = IntegerField(null=True)
     created = CharField(null=True)

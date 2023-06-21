@@ -21,10 +21,6 @@ class CategoryMigrator:
             created_at = datetime.strptime(item['createdAt'],"%Y-%m-%dT%H:%M:%S.%f%z")
             record.created = created_at.timestamp()
             record.save()
-            print(f'created {record.id}')
-
-        else:
-            print(f'exists {record.id}')
 
         return record
 
@@ -38,8 +34,8 @@ class CategoryMigrator:
             },
             "sort": [{"id": "asc"}]
         }
+        
         response_count = requests.get(f"{self.source_url}/tridge-categories/_count",auth=self.basic_auth)
-        print(response_count.content)
         
         if response_count.status_code == 200:
             count = json.loads(response_count.content)['count']
@@ -52,7 +48,6 @@ class CategoryMigrator:
 
                 response = requests.get(f"{self.source_url}/tridge-categories/_search",json=search_data,auth=self.basic_auth)
                 if response.status_code == 200:
-                    print('worked 200')
                     content = json.loads(response.content)
                     hits = content['hits']['hits']
                 
@@ -79,7 +74,6 @@ class CategoryMigrator:
 
                         record.payload = payload
                         record.save()
-
                         response = requests.post(f"{self.dest_url}/categories/_doc/{item_id}",json=payload)
 
 

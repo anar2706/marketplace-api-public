@@ -31,16 +31,3 @@ def create_app() -> FastAPI:
 
 app = create_app()
 
-@app.middleware("http")
-async def db_session_middleware(request: Request, call_next):
-    start = time.time()
-    response = JSONResponse({"status":"error","message":"Internal server error"},
-         status_code=500)
-    
-    response = await call_next(request)
-
-    end = time.time()
-    print(f'took {end-start}')
-
-    return response
-
