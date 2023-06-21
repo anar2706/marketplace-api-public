@@ -17,4 +17,4 @@ Because it was stopped it does not have features like periodic tasks, CI/CD and 
 
  - Add your environment values
  - change your port in docker compose
- - docker-compose up -- build -d 
+ - docker-compose up --build -d 
